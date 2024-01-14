@@ -44,7 +44,7 @@ ENV INVENTREE_BACKGROUND_WORKERS="4"
 
 # Default web server address:port
 ENV INVENTREE_WEB_ADDR=0.0.0.0
-ENV INVENTREE_WEB_PORT=8000
+ENV INVENTREE_WEB_PORT=8080
 
 LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${DATE} \
@@ -70,7 +70,7 @@ RUN apk add --no-cache \
     # fonts
     apk --update --upgrade --no-cache add fontconfig ttf-freefont font-noto terminus-font && fc-cache -f
 
-EXPOSE 8000
+EXPOSE 8080
 
 RUN mkdir -p ${INVENTREE_HOME}
 WORKDIR ${INVENTREE_HOME}
@@ -131,7 +131,7 @@ COPY --from=frontend ${INVENTREE_HOME}/InvenTree/web/static/web ./InvenTree/web/
 # Launch the production server
 # TODO: Work out why environment variables cannot be interpolated in this command
 # TODO: e.g. -b ${INVENTREE_WEB_ADDR}:${INVENTREE_WEB_PORT} fails here
-CMD gunicorn -c ./gunicorn.conf.py InvenTree.wsgi -b 0.0.0.0:8000 --chdir ./InvenTree
+CMD gunicorn -c ./gunicorn.conf.py InvenTree.wsgi -b 0.0.0.0:8080 --chdir ./InvenTree
 
 FROM inventree_base as dev
 
